@@ -8,6 +8,10 @@ RUN apk add --no-cache python3 py3-pip
 WORKDIR /server
 COPY server/pyproject.toml server/README.md ./
 COPY server/src ./src
+
+# Remove the redundant force-include that crashes hatchling build
+RUN sed -i '/force-include/d; /templates/d' pyproject.toml
+
 RUN pip3 install --no-cache-dir --break-system-packages .
 
 # Copy run script and set up data directory
